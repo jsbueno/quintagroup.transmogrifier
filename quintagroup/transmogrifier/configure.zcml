@@ -216,4 +216,21 @@
         interface="Products.Archetypes.interfaces.IObjectField"
         />
 
+    
+    <browser:page
+        name="export"
+        for="*"
+        permission="zope2.ViewManagementScreens"
+        class=".triggerviews.ExportView"
+        />
+
+        
+    <browser:page
+        name="import"
+        for="*"
+        permission="zope2.ViewManagementScreens"
+        class=".triggerviews.ImportView"
+        />
+
+
 </configure>

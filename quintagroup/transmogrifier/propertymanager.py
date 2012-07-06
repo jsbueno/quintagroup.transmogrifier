@@ -95,10 +95,15 @@ class Helper(PropertyManagerHelpers, NodeAdapterBase):
                 if child.hasAttribute('type'):
                     val = str(child.getAttribute('select_variable'))
                     prop_type = str(child.getAttribute('type'))
-                    obj._setProperty(prop_id, val, prop_type)
+                    try:
+                        obj._setProperty(prop_id, val, prop_type)
+                    except Exception, error:
+                        print error
                     prop_map = obj.propdict().get(prop_id, None)
                 else:
-                    raise ValueError("undefined property '%s'" % prop_id)
+                    print ("undefined property '%s'" % prop_id)
+                    continue
+                    #raise ValueError("undefined property '%s'" % prop_id)
 
             if not 'w' in prop_map.get('mode', 'wd'):
                 raise BadRequest('%s cannot be changed' % prop_id)
@@ -236,7 +241,8 @@ class PropertiesImporterSection(object):
 
             path = item[pathkey]
             obj = self.context.unrestrictedTraverse(path, None)
-            if obj is None:         # path doesn't exist
+            if obj is None or path=="":         # path doesn't exist
+                                                # or we are at import context root
                 yield item; continue
 
             if IPropertyManager.providedBy(obj):
@@ -255,7 +261,6 @@ class PropertiesImporterSection(object):
                         continue
                     if child.getAttribute('name') in excluded_props:
                         root.removeChild(child)
-
                 helper.context = obj
                 helper._initProperties(root)
 

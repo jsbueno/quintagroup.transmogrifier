@@ -83,18 +83,27 @@ class ReaderSection(object):
             names = self.import_context.listDirectory(top)
             if names is None:
                 names = []
-        path = top[len(self.prefix):]
-        path = path.lstrip(os.sep)
-        item = {self.pathkey: '/'.join(path.split(os.sep))}
+
+        # Do not use ZODB path equal do Filesystem PATH:
+        #path = top[len(self.prefix):]
+        #path = path.lstrip('/')
+        #item = {self.pathkey: path, self.fileskey: {}}
+        item = {self.fileskey: {}}
+        files = item[self.fileskey]
         for name in names:
             full_name = os.path.join(top, name)
             if self.import_context.isDirectory(full_name): continue
             section = self.options.get(name, name).strip()
-            files = item.setdefault(self.fileskey, {})
             files[section] = {
                 'name': name,
                 'data': self.import_context.readDataFile(name, top)
             }
+        if files.has_key(".path.txt"):
+            item[self.pathkey] = files[".path.txt"]["data"].strip()
+        else:
+            #empty path uses this items manifest file 
+            # as seeder in the import process
+            item[self.pathkey] = ""
         return item
 
     def __iter__(self):
