@@ -134,6 +134,11 @@
         component=".portlets.PortletsImporterSection"
         name="quintagroup.transmogrifier.portletsimporter"
         />
+        
+    <utility
+        component=".monkeypatcher.MonkeyPatcherSession"
+        name="quintagroup.transmogrifier.monkeypatcher"
+        />
 
     <adapter factory=".portlets.PortletAssignmentExportImportHandler" />
 
