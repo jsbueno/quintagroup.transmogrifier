@@ -22,6 +22,9 @@ from collective.transmogrifier.interfaces import ISection, ISectionBlueprint
 from Products.ATContentTypes.content import topic
 
 
+from Products.ATContentTypes.content.base import ATCTFolder
+from Products.CMFCore.utils import getToolByName
+
 class Container(object):
     def initializeArchetype(self, **kwargs):    
         ret_val = ATCTFolder.initializeArchetype(self, **kwargs)
