@@ -99,7 +99,7 @@ class ReaderSection(object):
                 'data': self.import_context.readDataFile(name, top)
             }
         if files.has_key(".path.txt"):
-            item[self.pathkey] = files[".path.txt"]["data"].strip()
+            item[self.pathkey] = files[".path.txt"]["data"].strip().rstrip("/").replace("%20", " ")
         else:
             #empty path uses this items manifest file 
             # as seeder in the import process

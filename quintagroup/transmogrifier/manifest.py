@@ -140,7 +140,7 @@ class ManifestImporterSection(object):
         item = None
         folder_path = None
         while True:
-            import ipdb; ipdb.set_trace()
+            #import ipdb; ipdb.set_trace()
             if folder_path == '':
                 yield item
             manifest = self.manifests.get(folder_path, {})
@@ -155,6 +155,7 @@ class ManifestImporterSection(object):
                     self.storage.append(path)
                     item = {pathkey: path}
                 item[self.typekey] = manifest[id_]
+                print path, item[self.typekey]
                 yield item
             manifest = {}
             # consume any remaining unlisted entries of this folder
@@ -209,7 +210,10 @@ class ManifestImporterSection(object):
                 break
             self.it.next()
 
+# We prize for non-quantum code here
 del ManifestImporterSection
+
+# The old version of this section seems to work quite well:
 
 class ManifestImporterSection(object):
     classProvides(ISectionBlueprint)
@@ -242,10 +246,6 @@ class ManifestImporterSection(object):
             if not pathkey: continue
 
             path  = item[pathkey]
-            print path
-            if "memoria-luis-bunuel" in path:
-                    pass
-                    #import ipdb; ipdb.set_trace()
             if path != '':
                 parent, item_id = os.path.split(path)
                 manifest = self.manifests.get(parent, {})
@@ -258,7 +258,7 @@ class ManifestImporterSection(object):
                     # remove empty manifest dict
                     if not manifest:
                         del self.manifests[parent]
-
+                print path, item[self.typekey]
             # this item is folderish - parse manifest
             if fileskey and 'manifest' in item[fileskey]:
                 self.extractManifest(path, item[fileskey]['manifest']['data'])
